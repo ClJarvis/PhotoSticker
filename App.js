@@ -1,10 +1,11 @@
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import ImageViewer from './components/ImageViewer';
-import Button from './components/Button';
 
+
+import Button from './components/Button';
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
 import CircleButton from './components/CircleButton';
 import IconButton from './components/IconButton';
 
@@ -12,14 +13,16 @@ import EmojiPicker from './components/EmojiPicker';
 import EmojiList from './components/EmojiList';
 import EmojiSticker from './components/EmojiSticker';
 
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
 const PlaceholderImage = require('./assets/images/background-image.png');
 
 
 export default function App() {
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [showAppOptions, setShowAppOptions] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [showAppOptions, setShowAppOptions] = useState(false);
     const [pickedEmoji, setPickedEmoji] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
 
 
     const pickImageAsync = async () => {
@@ -28,13 +31,13 @@ export default function App() {
         quality: 1,
       });
 
-      if (!result.canceled){
-        setSelectedImage(result.assets[0].uri);
-        setShowAppOptions(true);
-      } else {
-        alert("You did not select an image.");
-      } 
-    };
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);      
+      setShowAppOptions(true);
+    } else {
+      alert('You did not select any image.');
+    }
+  };
 
 const onReset = () => {
   setShowAppOptions(false);
@@ -49,13 +52,13 @@ const onModalClose = () => {
 };
 
 const onSaveImageAsync = async () => {
- // later
+ 
 };
 
 
   return (
-    <View style={styles.container}>
-      <View style={styles.imagecontainer}>
+    <GestureHandlerRootView style={styles.container}>
+      <View style={styles.imageContainer}>
         <ImageViewer 
             placeholderImageSource={PlaceholderImage} 
             setSelectedImage ={selectedImage}
@@ -80,7 +83,7 @@ const onSaveImageAsync = async () => {
         <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
       </EmojiPicker>
       <StatusBar style="auto" />
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#25292E',
     alignItems: 'center',
   },
-  Imagecontainer: {
+  ImageContainer: {
     flex: 1,
     paddingTop: 58,
   },
